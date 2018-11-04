@@ -62,6 +62,10 @@ void ExtractTopScaleFeatures(FeatureKeypoints* keypoints,
                              FeatureDescriptors* descriptors,
                              const size_t num_features);
 
+void ExtractTopScaleFeatures(FeatureKeypoints* keypoints,
+                             CustomFeatureDescriptors* descriptors,
+                             const size_t num_features);
+
 }  // namespace colmap
 
 #endif  // COLMAP_SRC_FEATURE_UTILS_H_
