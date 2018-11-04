@@ -90,7 +90,7 @@ Eigen::MatrixXi ComputeSiftDistanceMatrix(
   const Eigen::Matrix<int, Eigen::Dynamic, 128> descriptors2_int =
       descriptors2.cast<int>();
 
-  Eigen::Matrix<int, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> dists(
+  Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> dists(
       descriptors1.rows(), descriptors2.rows());
 
   for (FeatureDescriptors::Index i1 = 0; i1 < descriptors1.rows(); ++i1) {
