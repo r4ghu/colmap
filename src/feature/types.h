@@ -79,6 +79,8 @@ struct FeatureKeypoint {
 
 typedef Eigen::Matrix<uint8_t, 1, Eigen::Dynamic, Eigen::RowMajor>
     FeatureDescriptor;
+typedef Eigen::Matrix<float, 1, Eigen::Dynamic, Eigen::RowMajor>
+    CustomFeatureDescriptor;
 
 struct FeatureMatch {
   FeatureMatch()
