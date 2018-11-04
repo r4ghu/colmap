@@ -240,6 +240,11 @@ void FeatureMatcherCache::Setup() {
       cache_size_, [this](const image_t image_id) {
         return database_->ReadDescriptors(image_id);
       }));
+  
+  custom_descriptors_cache_.reset(new LRUCache<image_t, CustomFeatureDescriptors>(
+      cache_size_, [this](const image_t image_id) {
+        return database_->ReadCustomDescriptors(image_id);
+      }));
 }
 
 const Camera& FeatureMatcherCache::GetCamera(const camera_t camera_id) const {
