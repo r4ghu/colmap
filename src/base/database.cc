@@ -670,6 +670,15 @@ void Database::WriteDescriptors(const image_t image_id,
   SQLITE3_CALL(sqlite3_reset(sql_stmt_write_descriptors_));
 }
 
+void Database::WriteDescriptors(const image_t image_id,
+                                const CustomFeatureDescriptors& descriptors) const {
+  SQLITE3_CALL(sqlite3_bind_int64(sql_stmt_write_descriptors_, 1, image_id));
+  WriteDynamicMatrixBlob(sql_stmt_write_descriptors_, descriptors, 2);
+
+  SQLITE3_CALL(sqlite3_step(sql_stmt_write_descriptors_));
+  SQLITE3_CALL(sqlite3_reset(sql_stmt_write_descriptors_));
+}
+
 void Database::WriteMatches(const image_t image_id1, const image_t image_id2,
                             const FeatureMatches& matches) const {
   const image_pair_t pair_id = ImagePairToPairId(image_id1, image_id2);

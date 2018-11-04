@@ -181,6 +181,8 @@ class Database {
                       const FeatureKeypoints& keypoints) const;
   void WriteDescriptors(const image_t image_id,
                         const FeatureDescriptors& descriptors) const;
+  void WriteDescriptors(const image_t image_id,
+                        const CustomFeatureDescriptors& descriptors) const;
   void WriteMatches(const image_t image_id1, const image_t image_id2,
                     const FeatureMatches& matches) const;
   void WriteTwoViewGeometry(const image_t image_id1, const image_t image_id2,

@@ -214,8 +214,8 @@ void FeatureImporter::Run() {
 
     if (ExistsFile(path)) {
       FeatureKeypoints keypoints;
-      FeatureDescriptors descriptors;
-      LoadSiftFeaturesFromTextFile(path, &keypoints, &descriptors);
+      CustomFeatureDescriptors descriptors;
+      LoadCustomFeaturesFromTextFile(path, &keypoints, &descriptors);
 
       std::cout << "  Features:       " << keypoints.size() << std::endl;
 
