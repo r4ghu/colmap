@@ -236,6 +236,10 @@ void MatchSiftFeaturesCPU(const SiftMatchingOptions& match_options,
                           const FeatureDescriptors& descriptors1,
                           const FeatureDescriptors& descriptors2,
                           FeatureMatches* matches);
+void MatchCustomFeaturesCPU(const SiftMatchingOptions& match_options,
+                          const CustomFeatureDescriptors& descriptors1,
+                          const CustomFeatureDescriptors& descriptors2,
+                          FeatureMatches* matches);
 void MatchGuidedSiftFeaturesCPU(const SiftMatchingOptions& match_options,
                                 const FeatureKeypoints& keypoints1,
                                 const FeatureKeypoints& keypoints2,

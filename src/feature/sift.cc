@@ -108,6 +108,36 @@ Eigen::MatrixXi ComputeSiftDistanceMatrix(
   return dists;
 }
 
+Eigen::MatrixXi ComputeCustomDistanceMatrix(
+    const FeatureKeypoints* keypoints1, const FeatureKeypoints* keypoints2,
+    const CustomFeatureDescriptors& descriptors1,
+    const CustomFeatureDescriptors& descriptors2,
+    const std::function<bool(float, float, float, float)>& guided_filter) {
+  if (guided_filter != nullptr) {
+    CHECK_NOTNULL(keypoints1);
+    CHECK_NOTNULL(keypoints2);
+    CHECK_EQ(keypoints1->size(), descriptors1.rows());
+    CHECK_EQ(keypoints2->size(), descriptors2.rows());
+  }
+
+  Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> dists(
+      descriptors1.rows(), descriptors2.rows());
+
+  for (CustomFeatureDescriptors::Index i1 = 0; i1 < descriptors1.rows(); ++i1) {
+    for (CustomFeatureDescriptors::Index i2 = 0; i2 < descriptors2.rows(); ++i2) {
+      if (guided_filter != nullptr &&
+          guided_filter((*keypoints1)[i1].x, (*keypoints1)[i1].y,
+                        (*keypoints2)[i2].x, (*keypoints2)[i2].y)) {
+        dists(i1, i2) = 0;
+      } else {
+        dists(i1, i2) = descriptors1.row(i1).dot(descriptors2.row(i2));
+      }
+    }
+  }
+
+  return dists;
+}
+
 size_t FindBestMatchesOneWay(const Eigen::MatrixXi& dists,
                              const float max_ratio, const float max_distance,
                              std::vector<int>* matches) {
@@ -119,10 +149,10 @@ size_t FindBestMatchesOneWay(const Eigen::MatrixXi& dists,
 
   for (Eigen::MatrixXi::Index i1 = 0; i1 < dists.rows(); ++i1) {
     int best_i2 = -1;
-    int best_dist = 0;
-    int second_best_dist = 0;
+    float best_dist = 0;
+    float second_best_dist = 0;
     for (Eigen::MatrixXi::Index i2 = 0; i2 < dists.cols(); ++i2) {
-      const int dist = dists(i1, i2);
+      const float dist = dists(i1, i2);
       if (dist > best_dist) {
         best_i2 = i2;
         second_best_dist = best_dist;
@@ -866,6 +896,20 @@ void MatchSiftFeaturesCPU(const SiftMatchingOptions& match_options,
   CHECK_NOTNULL(matches);
 
   const Eigen::MatrixXi dists = ComputeSiftDistanceMatrix(
+      nullptr, nullptr, descriptors1, descriptors2, nullptr);
+
+  FindBestMatches(dists, match_options.max_ratio, match_options.max_distance,
+                  match_options.cross_check, matches);
+}
+
+void MatchCustomFeaturesCPU(const SiftMatchingOptions& match_options,
+                          const CustomFeatureDescriptors& descriptors1,
+                          const CustomFeatureDescriptors& descriptors2,
+                          FeatureMatches* matches) {
+  CHECK(match_options.Check());
+  CHECK_NOTNULL(matches);
+
+  const Eigen::MatrixXi dists = ComputeCustomDistanceMatrix(
       nullptr, nullptr, descriptors1, descriptors2, nullptr);
 
   FindBestMatches(dists, match_options.max_ratio, match_options.max_distance,

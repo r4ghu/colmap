@@ -262,6 +262,12 @@ const FeatureDescriptors& FeatureMatcherCache::GetDescriptors(
   return descriptors_cache_->Get(image_id);
 }
 
+const CustomFeatureDescriptors& FeatureMatcherCache::GetDescriptors(
+    const image_t image_id) {
+  std::unique_lock<std::mutex> lock(database_mutex_);
+  return custom_descriptors_cache_->Get(image_id);
+}
+
 FeatureMatches FeatureMatcherCache::GetMatches(const image_t image_id1,
                                                const image_t image_id2) {
   std::unique_lock<std::mutex> lock(database_mutex_);
@@ -345,11 +351,11 @@ void SiftCPUFeatureMatcher::Run() {
     if (input_job.IsValid()) {
       auto data = input_job.Data();
 
-      const FeatureDescriptors descriptors1 =
+      const CustomFeatureDescriptors descriptors1 =
           cache_->GetDescriptors(data.image_id1);
-      const FeatureDescriptors descriptors2 =
+      const CustomFeatureDescriptors descriptors2 =
           cache_->GetDescriptors(data.image_id2);
-      MatchSiftFeaturesCPU(options_, descriptors1, descriptors2, &data.matches);
+      MatchCustomFeaturesCPU(options_, descriptors1, descriptors2, &data.matches);
 
       CHECK(output_queue_->Push(data));
     }
