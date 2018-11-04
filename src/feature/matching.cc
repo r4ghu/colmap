@@ -352,9 +352,9 @@ void SiftCPUFeatureMatcher::Run() {
       auto data = input_job.Data();
 
       const CustomFeatureDescriptors descriptors1 =
-          cache_->GetDescriptors(data.image_id1);
+          cache_->GetCustomDescriptors(data.image_id1);
       const CustomFeatureDescriptors descriptors2 =
-          cache_->GetDescriptors(data.image_id2);
+          cache_->GetCustomDescriptors(data.image_id2);
       MatchCustomFeaturesCPU(options_, descriptors1, descriptors2, &data.matches);
 
       CHECK(output_queue_->Push(data));
