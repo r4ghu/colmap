@@ -138,7 +138,7 @@ Eigen::MatrixXf ComputeCustomDistanceMatrix(
   return dists;
 }
 
-size_t FindBestMatchesOneWay(const Eigen::MatrixXi& dists,
+size_t FindBestMatchesOneWay(const Eigen::MatrixXf& dists,
                              const float max_ratio, const float max_distance,
                              std::vector<int>* matches) {
   // SIFT descriptor vectors are normalized to length 512.
@@ -191,7 +191,7 @@ size_t FindBestMatchesOneWay(const Eigen::MatrixXi& dists,
   return num_matches;
 }
 
-void FindBestMatches(const Eigen::MatrixXi& dists, const float max_ratio,
+void FindBestMatches(const Eigen::MatrixXf& dists, const float max_ratio,
                      const float max_distance, const bool cross_check,
                      FeatureMatches* matches) {
   matches->clear();
