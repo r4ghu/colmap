@@ -148,6 +148,7 @@ class Database {
 
   FeatureKeypoints ReadKeypoints(const image_t image_id) const;
   FeatureDescriptors ReadDescriptors(const image_t image_id) const;
+  FeatureDescriptors ReadCustomDescriptors(const image_t image_id) const;
 
   FeatureMatches ReadMatches(const image_t image_id1,
                              const image_t image_id2) const;

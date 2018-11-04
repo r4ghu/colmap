@@ -454,6 +454,19 @@ FeatureDescriptors Database::ReadDescriptors(const image_t image_id) const {
   return descriptors;
 }
 
+FeatureDescriptors Database::ReadCustomDescriptors(const image_t image_id) const {
+  SQLITE3_CALL(sqlite3_bind_int64(sql_stmt_read_descriptors_, 1, image_id));
+
+  const int rc = SQLITE3_CALL(sqlite3_step(sql_stmt_read_descriptors_));
+  const CustomFeatureDescriptors descriptors =
+      ReadDynamicMatrixBlob<CustomFeatureDescriptors>(sql_stmt_read_descriptors_, rc,
+                                                0);
+
+  SQLITE3_CALL(sqlite3_reset(sql_stmt_read_descriptors_));
+
+  return descriptors;
+}
+
 FeatureMatches Database::ReadMatches(image_t image_id1,
                                      image_t image_id2) const {
   const image_pair_t pair_id = ImagePairToPairId(image_id1, image_id2);
