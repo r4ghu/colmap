@@ -73,7 +73,7 @@ FeatureDescriptors TransformVLFeatToUBCFeatureDescriptors(
   return ubc_descriptors;
 }
 
-Eigen::MatrixXi ComputeSiftDistanceMatrix(
+Eigen::MatrixXf ComputeSiftDistanceMatrix(
     const FeatureKeypoints* keypoints1, const FeatureKeypoints* keypoints2,
     const FeatureDescriptors& descriptors1,
     const FeatureDescriptors& descriptors2,
@@ -108,7 +108,7 @@ Eigen::MatrixXi ComputeSiftDistanceMatrix(
   return dists;
 }
 
-Eigen::MatrixXi ComputeCustomDistanceMatrix(
+Eigen::MatrixXf ComputeCustomDistanceMatrix(
     const FeatureKeypoints* keypoints1, const FeatureKeypoints* keypoints2,
     const CustomFeatureDescriptors& descriptors1,
     const CustomFeatureDescriptors& descriptors2,
@@ -895,7 +895,7 @@ void MatchSiftFeaturesCPU(const SiftMatchingOptions& match_options,
   CHECK(match_options.Check());
   CHECK_NOTNULL(matches);
 
-  const Eigen::MatrixXi dists = ComputeSiftDistanceMatrix(
+  const Eigen::MatrixXf dists = ComputeSiftDistanceMatrix(
       nullptr, nullptr, descriptors1, descriptors2, nullptr);
 
   FindBestMatches(dists, match_options.max_ratio, match_options.max_distance,
@@ -909,7 +909,7 @@ void MatchCustomFeaturesCPU(const SiftMatchingOptions& match_options,
   CHECK(match_options.Check());
   CHECK_NOTNULL(matches);
 
-  const Eigen::MatrixXi dists = ComputeCustomDistanceMatrix(
+  const Eigen::MatrixXf dists = ComputeCustomDistanceMatrix(
       nullptr, nullptr, descriptors1, descriptors2, nullptr);
 
   FindBestMatches(dists, match_options.max_ratio, match_options.max_distance,
@@ -961,7 +961,7 @@ void MatchGuidedSiftFeaturesCPU(const SiftMatchingOptions& match_options,
 
   CHECK(guided_filter);
 
-  const Eigen::MatrixXi dists = ComputeSiftDistanceMatrix(
+  const Eigen::MatrixXf dists = ComputeSiftDistanceMatrix(
       &keypoints1, &keypoints2, descriptors1, descriptors2, guided_filter);
 
   FindBestMatches(dists, match_options.max_ratio, match_options.max_distance,
