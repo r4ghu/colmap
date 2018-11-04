@@ -210,6 +210,27 @@ void LoadSiftFeaturesFromTextFile(const std::string& path,
                                   FeatureKeypoints* keypoints,
                                   FeatureDescriptors* descriptors);
 
+// Load custom keypoints and descriptors from text file in the following format:
+//
+//    LINE_0:            NUM_FEATURES DIM
+//    LINE_1:            X Y SCALE ORIENTATION D_1 D_2 D_3 ... D_DIM
+//    LINE_I:            ...
+//    LINE_NUM_FEATURES: X Y SCALE ORIENTATION D_1 D_2 D_3 ... D_DIM
+//
+// where the first line specifies the number of features and the descriptor
+// dimensionality followed by one line per feature: X, Y, SCALE, ORIENTATION are
+// of type float and D_J represent the descriptor in the floats.
+//
+// For example:
+//
+//    2 4
+//    0.32 0.12 1.23 1.0 1 2 3 4
+//    0.32 0.12 1.23 1.0 1 2 3 4
+//
+void LoadCustomFeaturesFromTextFile(const std::string& path,
+                                   FeatureKeypoints* keypoints,
+                                   CustomFeatureDescriptors* descriptors);
+
 // Match the given SIFT features on the CPU.
 void MatchSiftFeaturesCPU(const SiftMatchingOptions& match_options,
                           const FeatureDescriptors& descriptors1,

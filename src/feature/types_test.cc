@@ -224,6 +224,18 @@ BOOST_AUTO_TEST_CASE(TestFeatureDescriptors) {
   BOOST_CHECK_EQUAL(descriptors(1, 2), descriptors.data()[5]);
 }
 
+BOOST_AUTO_TEST_CASE(TestCustomFeatureDescriptors) {
+  FeatureDescriptors descriptors = CustomFeatureDescriptors::Random(2, 3);
+  BOOST_CHECK_EQUAL(descriptors.rows(), 2);
+  BOOST_CHECK_EQUAL(descriptors.cols(), 3);
+  BOOST_CHECK_EQUAL(descriptors(0, 0), descriptors.data()[0]);
+  BOOST_CHECK_EQUAL(descriptors(0, 1), descriptors.data()[1]);
+  BOOST_CHECK_EQUAL(descriptors(0, 2), descriptors.data()[2]);
+  BOOST_CHECK_EQUAL(descriptors(1, 0), descriptors.data()[3]);
+  BOOST_CHECK_EQUAL(descriptors(1, 1), descriptors.data()[4]);
+  BOOST_CHECK_EQUAL(descriptors(1, 2), descriptors.data()[5]);
+}
+
 BOOST_AUTO_TEST_CASE(TestFeatureMatches) {
   FeatureMatch match;
   BOOST_CHECK_EQUAL(match.point2D_idx1, kInvalidPoint2DIdx);
