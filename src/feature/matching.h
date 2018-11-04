@@ -187,7 +187,7 @@ class FeatureMatcherCache {
   const Image& GetImage(const image_t image_id) const;
   const FeatureKeypoints& GetKeypoints(const image_t image_id);
   const FeatureDescriptors& GetDescriptors(const image_t image_id);
-  const CustomFeatureDescriptors& GetDescriptors(const image_t image_id);
+  const CustomFeatureDescriptors& GetCustomDescriptors(const image_t image_id);
   FeatureMatches GetMatches(const image_t image_id1, const image_t image_id2);
   std::vector<image_t> GetImageIds() const;
 

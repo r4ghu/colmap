@@ -262,7 +262,7 @@ const FeatureDescriptors& FeatureMatcherCache::GetDescriptors(
   return descriptors_cache_->Get(image_id);
 }
 
-const CustomFeatureDescriptors& FeatureMatcherCache::GetDescriptors(
+const CustomFeatureDescriptors& FeatureMatcherCache::GetCustomDescriptors(
     const image_t image_id) {
   std::unique_lock<std::mutex> lock(database_mutex_);
   return custom_descriptors_cache_->Get(image_id);
